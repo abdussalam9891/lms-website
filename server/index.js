@@ -1,6 +1,9 @@
 import "dotenv/config"
 import express from "express";
+import cookieParser from "cookie-parser";
+import cors from "cors"
 import dbConnection from "./db/db.js";
+import userRoute from "./routes/user.route.js"
 
 
 dbConnection();
@@ -10,18 +13,28 @@ const app = express();
 
 
 
+
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors({
+  origin:"http://localhost:5000",
+  credentials:true
+}))
+
+const PORT = process.env.PORT || 3000; 
 
 
-
-app.get("/about", (req, res)=>{
-  res.json({
-    "name": "abdus"
+app.use("/api/v1/user", userRoute);
+app.get("/home", (_, res)=>{
+  res.status(200).json({
+    success: true,
+    message:"Hello i am coming from backend"
   })
 })
 
 
-app.listen(5000, ()=>{
-  console.log("server running on port 5000");
+
+app.listen(PORT, ()=>{
+  console.log(`server running on port ${PORT}`);
 })
 

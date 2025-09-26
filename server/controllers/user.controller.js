@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import User from "../models/user.model";
+import User from "../models/user.model.js";
 import bcrypt from "bcryptjs"
 import { generateToken } from "../utils/generateToken.js";
 
@@ -25,7 +25,7 @@ export const register = async(req,res)=>{
 
    const hashedPassword = await bcrypt.hash(password, 10);
 
-   await user.create({
+   await User.create({
     name,
     email,
     password:hashedPassword
